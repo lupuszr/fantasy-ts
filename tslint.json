@@ -1,0 +1,9 @@
+{
+  "extends": "gts/tslint.json",
+  "max-line-length": [true, 200],
+  "linterOptions": {
+    "exclude": [
+      "**/*.json"
+    ]
+  }
+}
