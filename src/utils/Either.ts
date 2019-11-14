@@ -1,8 +1,5 @@
 export abstract class Either<E, A> {
-  cata<LeftRes, RightRes>(match: {
-    Left: (e: E) => LeftRes;
-    Right: (a: A) => RightRes;
-  }) {
+  cata<LeftRes, RightRes>(match: { Left: (e: E) => LeftRes; Right: (a: A) => RightRes }) {
     type constraintsT = keyof typeof match;
     switch ((this.constructor.name as unknown) as constraintsT) {
       case 'Left': {

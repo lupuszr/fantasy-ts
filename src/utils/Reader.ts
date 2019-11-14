@@ -48,17 +48,11 @@ export class Reader<Env, A> {
 
 /// Examples:::
 
-const tom: Reader<string, string> = Reader.ask<string>().chain(env =>
-  Reader.return(env + 'this is Tom')
-);
+const tom: Reader<string, string> = Reader.ask<string>().chain(env => Reader.return(env + 'this is Tom'));
 
-const jerry: Reader<string, string> = Reader.ask<string>().chain(env =>
-  Reader.return(env + 'this is Jerry')
-);
+const jerry: Reader<string, string> = Reader.ask<string>().chain(env => Reader.return(env + 'this is Jerry'));
 
-const tomAndJerry: Reader<string, string> = tom.chain(t =>
-  jerry.chain(j => Reader.return(t + '\n' + j + '\n'))
-);
+const tomAndJerry: Reader<string, string> = tom.chain(t => jerry.chain(j => Reader.return(t + '\n' + j + '\n')));
 
 const tomyBig = tom.map(t => t.toUpperCase());
 

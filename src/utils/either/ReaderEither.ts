@@ -55,11 +55,7 @@ const tomCat = ReaderEither.ask<{
   question: string;
   species: 'cat' | 'mouse';
 }>()
-  .chain(env =>
-    ReaderEither.return(
-      env.question + 'this is Tom.' + 'He is a ' + env.species
-    )
-  )
+  .chain(env => ReaderEither.return(env.question + 'this is Tom.' + 'He is a ' + env.species))
   .map(a => a.toUpperCase());
 
 const t = tomCat.run({ question: 'What is his name?', species: 'cat' });

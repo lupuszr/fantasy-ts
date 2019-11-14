@@ -1,8 +1,5 @@
 export abstract class Try<A> {
-  cata<FailureRes, SuccessRes>(match: {
-    Failure: (e: Error) => FailureRes;
-    Success: (a: A) => SuccessRes;
-  }) {
+  cata<FailureRes, SuccessRes>(match: { Failure: (e: Error) => FailureRes; Success: (a: A) => SuccessRes }) {
     type constraintsT = keyof typeof match;
     switch ((this.constructor.name as unknown) as constraintsT) {
       case 'Failure': {
