@@ -1,9 +1,9 @@
 import fc from 'fast-check';
-import { AccountService, AccountServiceImpl as ac, Balance } from './AccountService';
+import { AccountService, accountServiceImpl as ac1, Balance } from './AccountService';
 import { Try } from '../utils/Try';
 import { right } from '../utils/Either';
 
-const ac1 = new AccountService<{ balance: bigint }, bigint, bigint>(
+const ac = new AccountService<{ balance: bigint }, bigint, bigint>(
   (no, name, openDate) => Try.return({ balance: (1 as unknown) as bigint }), //open
   (account, closeDate) => Try.return({ balance: (1 as unknown) as bigint }), //close
   (account, amount) => Try.return({ balance: account.balance + amount }), //debit
@@ -12,12 +12,16 @@ const ac1 = new AccountService<{ balance: bigint }, bigint, bigint>(
 );
 
 it('Equal credit & debit in sequence retain the same balance', () => {
+  // const accountModel = {
+  //   balance: fc.bigUint().map(b => new Balance(b)),
+  //   no: fc.string(),
+  //   name: fc.string(),
+  //   dateOfOpen: fc.date(),
+  //   dateOfClose: fc.constant(right(new Date())),
+  // };
+
   const accountModel = {
-    balance: fc.bigUint().map(b => new Balance(b)),
-    no: fc.string(),
-    name: fc.string(),
-    dateOfOpen: fc.date(),
-    dateOfClose: fc.constant(right(new Date())),
+    balance: fc.bigUint(),
   };
 
   fc.assert(

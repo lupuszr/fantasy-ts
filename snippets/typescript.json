@@ -1,0 +1,29 @@
+{
+	"Create ADT": {
+		"prefix": "adt",
+		"body": [
+			"class ${cname} {",
+			"\tconstructor(",
+      "\t\tpublic ${name1}: ${type1}",
+      "\t){}",
+      "",
+      "\tcopy(match: Partial<PropertyObject<typeof ${cname}>>): ${cname} {",
+      "\t\treturn {...this, ...match}",
+      "\t}",
+      "}",
+      "$0"
+		]
+  },
+  "Create Lens": {
+    "prefix": "lens",
+    "body": [
+      "",
+      "const ${TM_SELECTED_TEXT}Lens = new Lens<$1, $2>(",
+      "// get::",
+      "\t(a: $1): $2 => a.${TM_SELECTED_TEXT},",
+      "// set::",
+      "\t(a: $1, value: $2): $1 => a.copy({$TM_SELECTED_TEXT: value})",
+      ")"
+    ]
+  }
+}
