@@ -1,6 +1,6 @@
 /* ClassType
 Represents any class constructor. */
-/* eslint-disable-next-line @typescript-eslint/no-explicit-any */
+/* tslint:disable-next-line:no-any eslint-disable-next-line @typescript-eslint/no-explicit-any */
 export type ClassType = { new (...args: any[]): any };
 
 export type Properties<T extends ClassType> = keyof InstanceType<T>;
@@ -18,11 +18,10 @@ type TResult = RemovePromise<typeof Result> //number
 
 */
 
-
 /*ClassMethodTypes
 Returns a union of the public method types on a class.*/
 export type ClassMethodTypes<T> = {
-    [K in keyof T]: T[K] extends (...args: unknown[]) => void ? T[K] : never;
+  [K in keyof T]: T[K] extends (...args: unknown[]) => void ? T[K] : never;
 }[keyof T];
 
 /* Usage 
@@ -37,7 +36,7 @@ type MethodTypes = ClassMethodTypes<A>; // (() => void | (param: string) => numb
 /*ClassMethodNames
 Returns a string union of public method names on a class.*/
 export type ClassMethodNames<T> = {
-    [K in keyof T]: T[K] extends (...args: unknown[]) => void ? K : never;
+  [K in keyof T]: T[K] extends (...args: unknown[]) => void ? K : never;
 }[keyof T];
 
 /* Usage

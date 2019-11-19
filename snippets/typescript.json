@@ -25,5 +25,9 @@
       "\t(a: $1, value: $2): $1 => a.copy({$TM_SELECTED_TEXT: value})",
       ")"
     ]
+  },
+  "Up": {
+    "prefix": "up",
+    "body": "${1/(.*)/${1:/upcase}/}"
   }
 }

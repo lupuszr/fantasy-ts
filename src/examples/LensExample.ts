@@ -15,8 +15,23 @@ class Address {
   }
 }
 
+class Account {
+  constructor(public id: number) {}
+
+  copy(match: Partial<PropertyObject<typeof Account>>): Account {
+    return { ...this, ...match };
+  }
+}
+
+const idLens = new Lens<Account, number>(
+  // get::
+  (a: Account): number => a.id,
+  // set::
+  (a: Account, value: number): Account => a.copy({ id: value })
+);
+
 class Customer {
-  constructor(public name: string, public address: Address) {}
+  constructor(public name: string, public address: Address, public account: Account) {}
 
   copy(match: Partial<PropertyObject<typeof Customer>>): Customer {
     return { ...this, ...match };
@@ -24,8 +39,20 @@ class Customer {
 }
 
 const address = new Address('pera', '', '', '', '12');
+const account = new Account(1234);
 
-const customer = new Customer('Pera Peric', address);
+const accountLens = new Lens<Customer, Account>(
+  // get::
+  (a: Customer): Account => a.account,
+  // set::
+  (a: Customer, value: Account): Customer => a.copy({ account: value })
+);
+
+const customer = new Customer('Pera Peric', address, account);
+
+const customerIdLens = Lens.compose(accountLens, idLens);
+const x = customerIdLens.get(customer);
+const u = customerIdLens.set(customer, 345);
 
 const addressLens = new Lens<Customer, Address>(
   // get::

@@ -1,7 +1,8 @@
 export abstract class Either<E, A> {
   cata<LeftRes, RightRes>(match: { Left: (e: E) => LeftRes; Right: (a: A) => RightRes }) {
     type constraintsT = keyof typeof match;
-    switch ((this.constructor.name as unknown) as constraintsT) {
+    const cname = (this.constructor.name as unknown) as constraintsT;
+    switch (cname) {
       case 'Left': {
         const eThis = (this as unknown) as Left<E>;
         return match['Left'](eThis.e);
@@ -62,6 +63,10 @@ export abstract class Either<E, A> {
       Right: a => a,
     });
   }
+
+  static return<E, A>(a: A) {
+    return new Right(a) as Either<E, A>
+  }
 }
 
 export class Left<E> extends Either<E, never> {
@@ -75,10 +80,10 @@ export class Right<A> extends Either<never, A> {
   }
 }
 
-export function left<E>(e: E) {
-  return new Left(e);
+export function left<E, A>(e: E) {
+  return new Left(e) as Either<E, A>;
 }
 
-export function right<A>(a: A) {
-  return new Right(a);
+export function right<E, A>(a: A) {
+  return new Right(a) as Either<E, A>; 
 }
