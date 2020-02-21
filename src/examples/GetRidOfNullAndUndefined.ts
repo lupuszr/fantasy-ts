@@ -1,12 +1,12 @@
 import { Maybe, just, nothing } from "../utils/Maybe";
 
 // These example will cover the usage of maybe
-// Maybe is a datatype which represent does the value exist or not
+// Maybe represents a computation that might not return a result, i.e., an optional value
 // with using it we don't need to write explicit if-s to handle undefined or null
 //
 // Our first example demonstrates a declarative way to dispatch side effects:
-// fromNullable check is our value null or undefined, if it is it turns it to Nothing, otherwise it wrap it will Just
-// tapJust will trigger its callback only if a value is there and it will return the exact same value what the input was
+// fromNullable checks if our value is null or undefined and if it is, it turns it to Nothing, otherwise it will wrap it with Just
+// tapJust will trigger its callback only if a value is there and it will return the exact same value as the input
 // tapNothing will be triggered if the input is Nothing and it will return Nothing.
 // 
 function example1() {
@@ -29,7 +29,7 @@ function example2() {
 
   const n = Maybe.fromNullable(undefined); // result is Nothing
 
-  n.map(a => a + 1); // as n is Nothing the map will NOT be called upon it. latter on we will demonstrate how to handle fallbacks (hint there is a fallback method)
+  n.map(a => a + 1); // as n is Nothing the map will NOT be called upon it. Later on we will demonstrate how to handle fallbacks (hint there is a fallback method)
 }
 
 
@@ -62,7 +62,7 @@ function example3() {
   const nickNameWithFallbackToUppercase =
     Maybe.fromNullableObject<ProfileT>(profile)
       .nickName
-      .fallback(profileM.firstName) // this method check if there is a value, if not use a fallback value else pass the original value
+      .fallback(profileM.firstName) // this method checks if there is a value present. If it's not present, it returns a fallback value, otherwise it returns the original value.
       .fallback(just("default"))
       .map(d => d.toUpperCase()) // this will always happen as we defined a fallback mechanism
 
