@@ -1,7 +1,9 @@
+import { Maybe } from "./Maybe";
 
 export abstract class List<A>  {
   cata<NilRes, ConsRes>(match: { Nil: () => NilRes; Cons: (a: A, list: List<A>) => ConsRes }) {
     type constraintsT = keyof typeof match;
+    // @ts-ignore
     const cname = (this.constructor.name as unknown) as constraintsT;
     switch (cname) {
       case 'Nil': {
@@ -13,6 +15,15 @@ export abstract class List<A>  {
         return match['Cons'](a, list);
       }
     }
+  }
+
+  traverse<B>(fn: (a: A) => Maybe<B>): Maybe<List<B>> {
+    return this.cata({
+      Nil: () => Maybe.of(List.empty()),
+      Cons: (a, ls) =>
+        fn(a).chain(res =>
+          ls.traverse(fn).map(t => cons(res, t)))
+    })
   }
 
   concat(list: List<A>): List<A> {
@@ -46,6 +57,14 @@ export abstract class List<A>  {
   static fromArray<A>(xs: Array<A>): List<A> {
     return xs.reduceRight((acc: List<A>, curr) => cons<A>(curr, acc), nil() as List<A>)
   }
+
+  static of<A>(a: A): List<A> {
+    return cons(a,List.empty());
+  }
+
+  static empty<A>(): List<A> {
+    return nil() as List<A>;
+  }
 }
 export class Nil extends List<unknown> {
   constructor() {
@@ -74,7 +93,7 @@ console.log(x)
 console.log(x.concat(y))
 console.log(JSON.stringify(x.concat(y)))
 console.log(List.fromArray(y.concat(x).concat(y).toArray()))
-const xr = new Array(100).fill(1)
+const xr = [1,2,3,4,5]
 const mr = List.fromArray(xr);
 const z = mr.chain(u => cons(u + 1, nil()))
 console.log(z)

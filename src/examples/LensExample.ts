@@ -1,5 +1,5 @@
 import { PropertyObject } from '../types/classHelpers';
-import { Lens } from '../utils/Lens';
+import { Lens } from '../utils/optics/Lens';
 
 class Address {
   constructor(
